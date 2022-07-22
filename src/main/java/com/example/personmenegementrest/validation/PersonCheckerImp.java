@@ -1,26 +1,28 @@
 package com.example.personmenegementrest.validation;
 
 
-import com.example.personmenegementrest.config.api.PersonChecker;
+import com.example.personmenegementrest.api.PersonChecker;
 import com.example.personmenegementrest.dto.Person;
 import com.example.personmenegementrest.types.Position;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
+@Slf4j
 @Service
 public class PersonCheckerImp implements PersonChecker {
-    public static final String EMPTY_FIELD = "emptyField";
-    public static final String INCORRECT_AGE = "incorrectAge";
-    public static final String INCORRECT_POSITION = "incorrectPosition";
-    public static final String INCORRECT_SALARY = "incorrectSalary";
-    public static final String LITTLE_WORK_EXPERIENCE = "littleWorkExperience";
+    private static final String EMPTY_FIELD = "emptyField";
+    private static final String INCORRECT_AGE = "incorrectAge";
+    private static final String INCORRECT_POSITION = "incorrectPosition";
+    private static final String INCORRECT_SALARY = "incorrectSalary";
+    private static final String LITTLE_WORK_EXPERIENCE = "littleWorkExperience";
     private final ResourceBundle errorMsg = ResourceBundle.getBundle("message");
 
     public void checkPersonRequiredFields(Person person) {
-
+        log.info("Was calling checkPersonRequiredFields. Input person: " + person.toString());
         if (person.getName() == null || person.getName().trim().equals("")) {
             person.setName(errorMsg.getString(EMPTY_FIELD));
             person.setValid(false);
@@ -53,6 +55,7 @@ public class PersonCheckerImp implements PersonChecker {
 
 
     public void checkPersonSalary(Person person) {
+        log.info("Was calling checkPersonSalary. Input person: " + person.toString());
         Position positionPers = Position.getDefine(person.getPosition());
         if (!checkSalaryMatchingPosition(positionPers, new BigDecimal(person.getSalary()))) {
             person.setValid(false);
@@ -64,6 +67,7 @@ public class PersonCheckerImp implements PersonChecker {
     }
 
     public void checkPersonExperienceForPosition(Person person) {
+        log.info("Was calling checkPersonExperienceForPosition. Input person: " + person.toString());
         Position positionPerson = Position.getDefine(person.getPosition());
         if (!checkExperienceMatchingPosition(positionPerson, person.getExperience())) {
             person.setValid(false);
@@ -74,6 +78,8 @@ public class PersonCheckerImp implements PersonChecker {
     }
 
     private boolean checkSalaryMatchingPosition(Position positionPerson, BigDecimal salaryPerson) {
+        log.debug("Was calling checkSalaryMatchingPosition. Input positionPerson: "
+                + positionPerson.toString() + " salaryPerson: " + salaryPerson);
         if (positionPerson.getSalaryMin().compareTo(salaryPerson) > 0
                 || positionPerson.getSalaryMax().compareTo(salaryPerson) < 0) {
             return false;
@@ -82,6 +88,8 @@ public class PersonCheckerImp implements PersonChecker {
     }
 
     private boolean checkExperienceMatchingPosition(Position positionPerson, String experience) {
+        log.debug("Was calling checkSalaryMatchingPosition. Input positionPerson: "
+                + positionPerson.toString() + " experience: " + experience);
         if (positionPerson.getWorkExperience().compareTo(Double.valueOf(experience)) > 0) {
             return false;
         }

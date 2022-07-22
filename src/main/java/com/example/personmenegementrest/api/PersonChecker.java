@@ -1,4 +1,4 @@
-package com.example.personmenegementrest.config.api;
+package com.example.personmenegementrest.api;
 
 import com.example.personmenegementrest.dto.Person;
 

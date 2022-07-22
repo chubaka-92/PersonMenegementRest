@@ -1,6 +1,7 @@
-package com.example.personmenegementrest.config.api;
+package com.example.personmenegementrest.api;
 
 import com.example.personmenegementrest.dto.Person;
+import com.example.personmenegementrest.dto.Task;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -17,5 +18,5 @@ public interface PersonService {
 
     ResponseEntity updatePerson(Person person);
 
-    ResponseEntity deletePerson(long id);
+    ResponseEntity deletePerson(Long id);
 }
